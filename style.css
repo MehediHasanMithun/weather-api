@@ -1,0 +1,27 @@
+body{
+    background-image: url("images/background/bg-image.jpg");
+    background-size: cover;
+}
+.search-ber{
+    margin-top: 50px;
+    text-align: center;
+}
+#city-name{
+    border: none;
+    width: 30%;
+    padding: 5px 20px;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+#condition-img{
+    width: 100px;
+    height: 100px;
+}
+.next-div{
+    margin-top: 50px;
+    text-align: center;
+}
+.fontColor{
+    color: white;
+    margin-top: 20px;
+}

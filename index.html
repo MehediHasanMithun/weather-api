@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="search-ber">
+        <input id="city-name" type="text" placeholder="Enter a Location for Weather...">
+        <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+    </div>
+    <div class="next-div">
+        <img id="condition-img" src="images/sunny.png" alt="">
+        <h1 id="show-city-name" class="fontColor">Dhaka</h1>
+        <h1 class="fontColor"> <span id="show-temp"></span><sup>0</sup>C</h1>
+        <h1 id="weather-condition" class="fontColor"></h1>
+
+
+    </div>
+
+    <script>
+
+        function setValue(cityName, temp, weatherCondition) {
+            let char = weatherCondition[0];
+            char = char.toUpperCase();
+            let newWeather = "";
+            newWeather += char;
+            for (let i = 1; i < weatherCondition.length; i++)
+                newWeather += weatherCondition[i];
+
+            char = cityName[0];
+            char = char.toUpperCase();
+            let newCity = "";
+            newCity += char;
+            for (let i = 1; i < cityName.length; i++)
+                newCity += cityName[i];
+
+            const tempInNumber = parseFloat(temp);
+            if (tempInNumber > 24)
+                document.getElementById("condition-img").src = "images/sunny.png";
+            else if (tempInNumber > 19)
+                document.getElementById("condition-img").src = "images/clear.png";
+            else if (tempInNumber > 14)
+                document.getElementById("condition-img").src = "images/wind.png";
+            else if (tempInNumber > 9)
+                document.getElementById("condition-img").src = "images/winter.png";
+            else
+                document.getElementById("condition-img").src = "images/rain.png";
+
+            document.getElementById("show-city-name").innerText = newCity;
+            document.getElementById("show-temp").innerText = temp;
+            document.getElementById("weather-condition").innerText = newWeather;
+        }
+
+        let cityName = "Dhaka";
+        const apiKey = "121860740e5d919e2b90e547e596e44f";
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`)
+            .then(res => res.json())
+            .then(data => {
+                const temp = data.main.temp;
+                const weatherCondition = data.weather[0].description;
+                setValue(cityName, temp, weatherCondition);
+            });
+
+        document.getElementById("search-btn").addEventListener("click", function () {
+            const cityName = document.getElementById("city-name").value;
+            const apiKey = "121860740e5d919e2b90e547e596e44f";
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`)
+                .then(res => res.json())
+                .then(data => {
+                    const temp = data.main.temp;
+                    const weatherCondition = data.weather[0].description;
+                    setValue(cityName, temp, weatherCondition);
+                })
+                .catch(() => {
+                    const errorTextContent = "Please search for a valid city 😩";
+                    alert(errorTextContent);
+                });
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
